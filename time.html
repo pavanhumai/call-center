@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>JavaScript Timer</title>
+</head>
+<body>
+
+	<h1 id="timer">00:00:00</h1>
+
+	<button onclick="startTimer()">Start</button>
+	<button onclick="stopTimer()">Stop</button>
+	<button onclick="resetTimer()">Reset</button>
+
+	<script>
+		var startTime, endTime, elapsedTime, timerInterval;
+
+		function startTimer() {
+			startTime = new Date();
+			timerInterval = setInterval(updateTimer, 1000);
+		}
+
+		function stopTimer() {
+			clearInterval(timerInterval);
+			endTime = new Date();
+			elapsedTime = endTime - startTime;
+		}
+
+		function resetTimer() {
+			clearInterval(timerInterval);
+			document.getElementById("timer").innerHTML = "00:00:00";
+			startTime = null;
+			endTime = null;
+			elapsedTime = null;
+		}
+
+		function updateTimer() {
+			var currentTime = new Date();
+			var timeDiff = currentTime - startTime;
+			var seconds = Math.floor(timeDiff / 1000);
+			var minutes = Math.floor(seconds / 60);
+			var hours = Math.floor(minutes / 60);
+			seconds %= 60;
+			minutes %= 60;
+			hours %= 60;
+			document.getElementById("timer").innerHTML = formatTime(hours) + ":" + formatTime(minutes) + ":" + formatTime(seconds);
+		}
+
+		function formatTime(time) {
+			if (time < 10) {
+				return "0" + time;
+			} else {
+				return time;
+			}
+		}
+	</script>
+
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Plivo Voice API Demo</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#call-button').click(function() {
+                var fromNumber = $('#from-number').val();
+                var toNumber = $('#to-number').val();
+                var authId = 'YOUR_AUTH_ID';
+                var authToken = 'YOUR_AUTH_TOKEN';
+
+                $.ajax({
+                    type: 'POST',
+                    url: 'https://api.plivo.com/v1/Account/' + authId + '/Call/',
+                    headers: {
+                        'Authorization': 'Basic ' + btoa(authId + ':' + authToken)
+                    },
+                    data: {
+                        'from': fromNumber,
+                        'to': toNumber,
+                        'answer_url': 'https://s3.amazonaws.com/static.plivo.com/answer.xml'
+                    },
+                    success: function(data) {
+                        alert('Call initiated!');
+                    },
+                    error: function(xhr, status, error) {
+                        alert('Error initiating call: ' + error);
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <h1>Plivo Voice API Demo</h1>
+    <label for="from-number">From Number:</label>
+    <input type="text" id="from-number" name="from-number"><br>
+    <label for="to-number">To Number:</label>
+    <input type="text" id="to-number" name="to-number"><br>
+    <button id="call-button">Call</button>
+    <a href="tel:123-456-7890">123-456-7890</a>
+    <table>
+        <tr onclick="window.open('tel:900300400');">
+          <td>Phone: 900 300 400</td>
+        </tr>
+      </table>
+
+</body>
+
+</html>
