@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Plivo Direct-Dial Call Recording</title>
+  
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+
+h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+}
+
+label {
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+input[type=text] {
+  font-size: 16px;
+  padding: 5px;
+  margin-bottom: 10px;
+}
+
+button {
+  font-size: 16px;
+  padding: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.red {
+  background-color: red;
+  color: white;
+}
+
+.hidden {
+  display: none;
+}
+
+  </style>
+</head>
+<body>
+  <h1>Plivo Direct-Dial Call Recording</h1>
+  <form id="callForm">
+    <label for="fromNumber">Your Number:</label>
+    <input type="text" id="fromNumber" name="fromNumber">
+    <br><br>
+    <label for="toNumber">Destination Number:</label>
+    <input type="text" id="toNumber" name="toNumber">
+    <br><br>
+    <button type="submit" id="callButton">Call</button>
+  </form>
+  <div id="callControls" class="hidden">
+    <button id="hangupButton" class="red">Hang Up</button>
+    <button id="muteButton">Mute</button>
+    <button id="unmuteButton" class="hidden">Unmute</button>
+  </div>
+  <script src="https://cdn.plivo.com/sdk/browser/v2/plivo.browser.js"></script>
+  <script>
+    var p = Plivo.create({
+  authId: 'YOUR_AUTH_ID',
+  authToken: 'YOUR_AUTH_TOKEN',
+  debug: 'DEBUG_LEVEL'
+});
+
+var callUUID = null;
+
+var callForm = document.getElementById('callForm');
+var callButton = document.getElementById('callButton');
+var callControls = document.getElementById('callControls');
+var hangupButton = document.getElementById('hangupButton');
+var muteButton = document.getElementById('muteButton');
+var unmuteButton = document.getElementById('unmuteButton');
+
+callForm.addEventListener('submit', function(event) {
+  event.preventDefault();
+  var fromNumber = document.getElementById('fromNumber').value;
+  var toNumber = document.getElementById('toNumber').value;
+
+  var callParams = {
+    from: fromNumber,
+    to: toNumber,
+    answer_url: 'https://answer.url',
+    answer_method: 'POST',
+    record: true,
+    recording_callback_url: 'https://recording.callback.url',
+    recording_callback_method: 'POST'
+  };
+
+  p.call(callParams).then(function(call) {
+    callUUID = call.getCallUUID();
+    console.log('Call UUID:', callUUID);
+    callForm.classList.add('hidden');
+    callControls.classList.remove('hidden');
+  });
+});
+
+hangupButton.addEventListener('click', function(event) {
+  event.preventDefault();
+  p.hangup(callUUID);
+  callForm.classList.remove('hidden');
+  callControls.classList.add('hidden');
+});
+
+muteButton.addEventListener('click',)
+
+  </script>
+</body>
+</html>
